@@ -1,0 +1,104 @@
+{% comment %} <!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+      <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="{% static 'css/login/style.css' %}">
+
+    </head>
+    <body>
+    <section class="ftco-section" >
+      <div class="card" style="width: 18rem;,text-align:center;">
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="{% url 'payment'%}" class="form-control btn btn-primary rounded submit px-3">Go For Payment</a>
+        </div>
+      </div>
+    </section>
+
+    <script src="js/jquery.min.js"></script>
+  <script src="js/popper.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+
+    </body>
+</html> {% endcomment %}
+
+
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+      <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="{% static 'css/login/style.css' %}">
+
+    </head>
+    <body>
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    {% comment %} <h2 class="heading-section">Log in</h2> {% endcomment %}
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-10">
+                    <div class="wrap d-md-flex">
+                        <div class="img" style="background-image:url({% static 'img\login\check.png' %})">
+                  </div>
+                    <div class="login-wrap p-4 p-md-5">
+                        <div class="d-flex">
+                          <div class="w-100">
+                            {% if payment_allow == "allow"%} 
+                            <a href="{% url 'payment'%}" class="form-control btn btn-primary rounded submit px-3">Go For Payment</a>
+                            {% else %}
+                             <h3 class="mb-4">Checkout</h3>
+                            {% if messages %}
+                            {% for message in messages %}
+                            <h4 class="alert alert-secondary" style="color:red">{{message}}</h4>
+                            {% endfor %}
+                            {% endif%}
+                            
+                            <form method="post">
+                                {% csrf_token %}
+                                {{form}}
+
+                            <div class="form-group">
+                                <button type="submit" name="checkout" id="checkout" class="form-control btn btn-primary rounded submit px-3">Save adrress</button>
+                            </div> 
+                            {% comment %} <a href="{% url 'payment'%}" class="form-control btn btn-primary rounded submit px-3">Go For Payment</a>  {% endcomment %}
+                            </form>
+                            {% endif %}
+                            </div>
+                        </div>
+                    {% comment %} </div>
+                  <p class="text-center">Don't you have an account? <a data-toggle="tab" href="{%url 'user_register' %}">Register here</a></p>
+                </div> {% endcomment %}
+              </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/jquery.min.js"></script>
+  <script src="js/popper.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+
+    </body>
+</html>

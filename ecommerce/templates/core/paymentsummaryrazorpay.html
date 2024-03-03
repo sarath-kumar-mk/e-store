@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+{% load static%}
+{% load cart_template_tag %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  
+    <title>Bethany Bootstrap Template - Index</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+  
+    <!-- Favicons -->
+    <link href="{% static 'img/favicon.png' %}" rel="icon">
+    <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+  
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static '/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  
+    <!-- Template Main CSS File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Bethany
+  * Updated: Jan 27 2024 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/bethany-free-onepage-bootstrap-theme/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container">
+      <div class="header-container d-flex align-items-center justify-content-between">
+        <div class="logo">
+          <h1 class="text-light"><a href="index.html"><span>E-STORE</span></a></h1>
+          <!-- Uncomment below if you prefer to use an image logo -->
+          <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+          <ul>
+            {% if user.is_authenticated %}
+            <li><a class="nav-link scrollto active" href="{%url 'index' %}">Home</a></li>
+            <li><a class="nav-link scrollto active" href="{%url 'orderlist' %}">Cart&nbsp;&nbsp;<div style="color:red;">{{request.user| cart_item_count}}</div></a></li>
+            {% if user.is_superuser %}
+            <li><a class="nav-link scrollto active" href="{% url 'add_product'%}">Add Product</a></li>
+            <li><a class="nav-link scrollto active" href="{% url 'add_category'%}">Add Category</a></li>
+            <a href="{% url 'contact_view'%}" class="nav-link scrollto active">View Contact Details</a>
+
+            {% endif %}
+
+            <li><a class="nav-link scrollto active" href="#hero">welcome {{user.username}}</a></li>
+            {% if not user.is_superuser %}
+
+            <li><a class="getstarted scrollto" href="{% url 'contact_us' %}">Contact Us</a></li>
+            {%endif%}
+            <li><a class="getstarted scrollto" href="{% url 'user_logout' %}">Logout</a></li>
+            
+            
+
+            {% else %}
+            
+            <li><a class="getstarted scrollto" href="{% url 'user_login' %}">Login</a></li>
+            <li><a class="getstarted scrollto" href="{% url 'user_register' %}">Register</a></li>
+            {%endif%}
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+      </div><!-- End Header Container -->
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+      <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Portfolio Details</h2>
+          <ol>
+            <li><a href="{%url 'index'%}">Home</a></li>
+            <li>Portfolio Details</li>
+          </ol>
+        </div>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+
+    <section id="Portfolio-details" class="portfolio-details">
+      <div class="container">
+        {%for message in messages%}
+        <h2>{{message}}</h2>
+        {% endfor %}
+
+        <div class="row gy-4">
+          <div class="col-lg-4">
+            <div class="portfolio-info">
+              <h3>Payment Summary</h3>
+              <ul>
+                {% comment %} <li><strong>CASH ON DELIVERY<strong>:<input type="radio" id="html" name="fav_language" value="HTML"><li> {% endcomment %}
+                <li><strong>Total Amount<strong>:{{final_price}}<li>
+                  <li>
+                    <button id="rzp-button1" class="btn btn-sm btn-dark btn-block">Pay Now</button>
+
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% comment %} <i class="fas fa-money-bill"></i> {% endcomment %}
+
+    {% comment %} <section class="inner-page">
+      <div class="container">
+        <table class="table">
+            <thead class="table-dark">
+             <tr>
+                <th scope="col">No</th>
+                <th scope="col">Item Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total Item Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order_item in order.items.all %}
+
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{order_item.product.name}}</td>
+      <td>Rs.{{order_item.product.price}}</td>
+      <td>
+        <a href="{% url 'add_item' order_item.product.pk%}">+</a> &nbsp;
+        {{order_item.quantity}} &nbsp;
+        <a href="{% url 'remove_item' order_item.product.pk%}">-</a>
+      </td>
+      <td>Rs.{{order_item.get_total_item_price}}</td>
+    </tr>
+    {% empty %}
+    <tr class="row100 body">
+      <td class="cell100 coloumn1">Your Cart Is Empty</td>
+      <td colspan="cell100 coloumn1">
+        <a href="{% url 'index'%}" class="btn btn-primary float-right">Continue Shopping</a>
+    </td>
+    </tr>
+    {%endfor%}
+
+    {% if order.get_total_price %}
+    <tr class="row100 body" style="background-color:blue;">
+      <td class="cell100 coloumn1" style="color:red;"><b>Total Order Price:</b></td>
+      <td class="cell100 coloumn2"></td>
+      <td class="cell100 coloumn3"></td>
+      <td class="cell100 coloumn4"></td>
+      <td class="cell100 coloumn5" style="color:red;"><i class="fas fa-rupee-sign"><b>Rs.{{order.get_total_price}}</b></i></td>
+    </tr>
+    <tr class="row100 body">
+        <td class="cell100 coloumn1">
+            <a href="{% url 'checkout_page'%}" class="btn btn-warning float-right m1-2">Checkout</a>
+            <a href="/" class="btn btn-primary float-right ">Continue  Shopping</a>
+        </td>
+    </tr>
+    {%endif%}
+
+  </tbody>
+          </table>
+      </div>
+    </section> {% endcomment %}
+
+  </main><!-- End #main -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    var options = {
+      "key": "{{razorpay_merchant_id}}", // Enter the Key ID generated from the Dashboard
+      "amount": "{%  widthratio final_price 1 100 %}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "my E-commerce website", //your business name
+      "description": "Test Transaction",
+      "image": "https://example.com/your_logo",
+      "order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "callback_url": "{%url 'handlerequest' %}",
+      "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+          "name": "{{request.user.username}}", //your customer's name
+          "email": "{{request.user.email}}",
+          "contact":"+91" + "{{request.user.phone_field}}" //Provide the customer's phone number for better conversion rates 
+      },
+      "notes": {
+          "address": "Razorpay Corporate Office"
+      },
+      "theme": {
+          "color": "#FF8800"
+      }
+    };
+  var rzp1 = new Razorpay(options);
+  document.getElementById('rzp-button1').onclick = function(e){
+      rzp1.open();
+      e.preventDefault();
+  } 
+ 
+  </script>
+
+  {% comment %} <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a> {% endcomment %}
+
+  <!-- Vendor JS Files -->
+
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+
+</body>
+
+</html>

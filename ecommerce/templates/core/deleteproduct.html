@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+        {% load static%}
+        {% load cart_template_tag %}
+        <html lang="en">
+        
+        <head>
+            <meta charset="utf-8">
+            <meta content="width=device-width, initial-scale=1.0" name="viewport">
+          
+            <title>All Products</title>
+            <meta content="" name="description">
+            <meta content="" name="keywords">
+          
+            <!-- Favicons -->
+            <link href="{% static 'img/favicon.png' %}" rel="icon">
+            <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+          
+            <!-- Google Fonts -->
+            <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+          
+            <!-- Vendor CSS Files -->
+            <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+            <link href="{% static '/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+            <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+            <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+            <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+            <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+            <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+          
+            <!-- Template Main CSS File -->
+            <link href="{% static 'css/style.css' %}" rel="stylesheet">
+        
+          <!-- =======================================================
+          * Template Name: Bethany
+          * Updated: Jan 27 2024 with Bootstrap v5.3.2
+          * Template URL: https://bootstrapmade.com/bethany-free-onepage-bootstrap-theme/
+          * Author: BootstrapMade.com
+          * License: https://bootstrapmade.com/license/
+          ======================================================== -->
+        </head>
+        
+        <body>
+        
+          <!-- ======= Header ======= -->
+          <header id="header" class="fixed-top d-flex align-items-center">
+            <div class="container">
+              <div class="header-container d-flex align-items-center justify-content-between">
+                <div class="logo">
+                  <h1 class="text-light"><a href="index.html"><span>E-STORE</span></a></h1>
+                  <!-- Uncomment below if you prefer to use an image logo -->
+                  <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+                </div>
+        
+                <nav id="navbar" class="navbar">
+                  <ul>
+                    {% if user.is_authenticated %}
+                    <li><a class="nav-link scrollto active" href="{%url 'index' %}">Home</a></li>
+                    <li><a class="nav-link scrollto active" href="{%url 'orderlist' %}">Cart&nbsp;&nbsp;<div style="color:red;">{{request.user| cart_item_count}}</div></a></li>
+                    {% if user.is_superuser %}
+                    <li><a class="nav-link scrollto active" href="{% url 'add_product'%}">Add Product</a></li>
+                    <li><a class="nav-link scrollto active" href="{% url 'add_category'%}">Add Category</a></li>
+                    <a href="{% url 'contact_view'%}" class="nav-link scrollto active">View Contact Details</a>
+                    <li><a class="nav-link scrollto active" href="{% url 'productview'%}">All Products</a></li>
+                    {% comment %} <li><a class="nav-link scrollto active" href="{% url 'update_product'  %}">Update Product</a></li> {% endcomment %}
+        
+                    {% endif %}
+        
+                    <li><a class="nav-link scrollto active" href="#hero">welcome {{user.username}}</a></li>
+                    {% if not user.is_superuser %}
+        
+                    <li><a class="getstarted scrollto" href="{% url 'contact_us' %}">Contact Us</a></li>
+                    {%endif%}
+                    <li><a class="getstarted scrollto" href="{% url 'user_logout' %}">Logout</a></li>
+                    
+                    
+        
+                    {% else %}
+                    
+                    <li><a class="getstarted scrollto" href="{% url 'user_login' %}">Login</a></li>
+                    <li><a class="getstarted scrollto" href="{% url 'user_register' %}">Register</a></li>
+                    {%endif%}
+                  </ul>
+                  <i class="bi bi-list mobile-nav-toggle"></i>
+                </nav><!-- .navbar -->
+        
+              </div><!-- End Header Container -->
+            </div>
+          </header><!-- End Header -->
+        
+          <main id="main">
+        
+            <!-- ======= Breadcrumbs ======= -->
+            <section class="breadcrumbs">
+              <div class="container">
+        
+                <div class="d-flex justify-content-between align-items-center">
+                  <h2>All Products</h2>
+                  <ol>
+                    <li><a href="{%url 'index'%}">Home</a></li>
+                    <li>All Products</li>
+                  </ol>
+                </div>
+        
+              </div>
+            </section><!-- End Breadcrumbs -->
+        
+            <section class="inner-page">
+              <div class="container">
+                <table class="table">
+                    <thead class="table-dark">
+                     <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Availibity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Delete/Update</th>
+                        
+        
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+        
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              
+              <td>{{product.name}}</td>
+              <td>{{product.product_available_count}}</td>
+              <td>{{product.price}}</td>
+            <td>
+              
+                <form action="{% url 'deletepro' product.id%}"method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary float-right" onclick="return confirm('Are you sure you want to delete {{ product.name }}?')">Delete</button>
+                    {% comment %} <button type="submit" onclick="return confirm('Are you sure you want to Update {{ product.name }}?')">Update</button> {% endcomment %}
+                    <a href="{% url 'update_product' product.id %}" class="btn btn-primary float-right">Update Product</a>
+                
+                  </form>
+
+              </td>
+        
+            </tr>
+            
+            {% comment %} {% empty %}
+            <tr class="row100 body">
+              <td class="cell100 coloumn1">Your Cart Is Empty</td>
+              <td colspan="cell100 coloumn1">
+                <a href="{% url 'index'%}" class="btn btn-primary float-right">Continue Shopping</a>
+            </td>
+            </tr> {% endcomment %}
+            {%endfor%}
+        
+        
+          </tbody>
+                  </table>
+              </div>
+            </section>
+
+</html>
